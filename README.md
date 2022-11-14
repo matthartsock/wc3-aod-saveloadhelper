@@ -1,5 +1,7 @@
 # Warcraft 3 Save/Load Helper for Aspect of Doom
 
+Info:  Uses autohotkey v1 (latest), not v2.
+
 Commands:
 
 `-s` : quickly sends -save   and -c if WC3 is the target window
