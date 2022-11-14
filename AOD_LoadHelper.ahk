@@ -1,7 +1,7 @@
 #SingleInstance, Force
 SendMode Input
 SetWorkingDir, %A_MyDocuments%\Warcraft III\CustomMapData\Aspect of Doom saves\
-; SetWorkingDir, C:\Users\Hartsock\OneDrive\Documents\Warcraft III\CustomMapData\Aspect of Doom saves\
+; SetWorkingDir, C:\Users\UserName\OneDrive\Documents\Warcraft III\CustomMapData\Aspect of Doom saves\
 
 accts := new DataStructure()
 AccountListGUIValue :=
