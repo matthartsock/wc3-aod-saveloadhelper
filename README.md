@@ -1,6 +1,6 @@
 # Warcraft 3 Save/Load Helper for Aspect of Doom
 
-Info: Uses autohotkey v1.1 (latest), not v2.
+Info: Uses autohotkey v1.1 (latest), not v2.  Direct link to download latest 1.1:  https://www.autohotkey.com/download/ahk-install.exe
 
 _Important_: If taking custom backups or names, follow the same name syntax the system uses. You can customize the name like the following:
 
