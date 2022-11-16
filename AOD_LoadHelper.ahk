@@ -45,7 +45,10 @@ LoadBaseGUI:
     Gui, Add, Text, x10 h25 w150 y10, Account
     accts.RenderAccounts()
     Gui, Add, Button, x175 h25 w100 y30 gRefreshSaves vRefreshBtn, &Refresh Saves
-    Gui, Show, NoActivate x800 y100 , Window
+
+    WinGetPos, X, Y, W, H, A
+    Y += 50
+    Gui, Show, NoActivate x%X% y%Y% , Window
 Return
 
 RefreshSaves:
