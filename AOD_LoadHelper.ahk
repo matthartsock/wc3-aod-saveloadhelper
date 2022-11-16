@@ -44,11 +44,17 @@ LoadBaseGUI:
     Gui, LoadGUI:Default
     Gui, Add, Text, x10 h25 w150 y10, Account
     accts.RenderAccounts()
-    Gui, Add, Button, x175 h25 w100 y30 gRefreshSaves vRefreshBtn, &Refresh Saves
+    Gui, Add, Button, x200 h25 w80 y30 gRefreshSaves vRefreshBtn, &Refresh Saves
 
     WinGetPos, X, Y, W, H, A
     Y += 50
     Gui, Show, NoActivate x%X% y%Y% , Window
+Return
+
+LoadCharsInWindow:
+    GuiControlGet, AccountListGUIValue, , AccountListGUIValue
+    accts.SelectedAccount := AccountListGUIValue
+    accts.Render()
 Return
 
 RefreshSaves:
@@ -57,7 +63,7 @@ RefreshSaves:
     accts.SelectedAccount := AccountListGUIValue
     ;Kill existing rendering before rendering
     accts.KillExistingRendered()
-    accts.Render()
+    Gosub, load_data
 Return
 
 Class DataStructure {
@@ -76,12 +82,21 @@ Class DataStructure {
         AccountNamesTextList := ""
         for acctIndex, account in this.Accounts{
             AccountNamesTextList .= account.AccountName . "|"
+            if (this.SelectedAccount == account.AccountName)
+                AccountNamesTextList .= "|"
         }
-        Gui, Add, DropDownList, vAccountListGUIValue gRefreshSaves Choose1 x10 y30 h25, %AccountNamesTextList%
-        Gosub, RefreshSaves
+        if (InStr(AccountNamesTextList, "||"))
+            Gui, Add, DropDownList, vAccountListGUIValue gRefreshSaves x10 y30 h125 w175, %AccountNamesTextList%
+        else
+            Gui, Add, DropDownList, vAccountListGUIValue gRefreshSaves Choose1 x10 y30 h125 w175, %AccountNamesTextList%
+        ;Gosub, RefreshSaves
+        Gosub, LoadCharsInWindow
     }
     KillExistingRendered(){
         ; Kill everything dynamically rendered...
+        Gui, Destroy
+        ; Kill everything in the data structure except Selected AccountListGUIValue
+        this.Accounts := []
     }
     Render(){
         Yval := 75
@@ -91,7 +106,6 @@ Class DataStructure {
         Yval := Yval+25
         ; Generate the characters for the selected account
         for inx, char in this.Accounts[this.SelectedAccount].Characters{
-            GUIIndex++
             charName := char.CharacterName
             charNameNoSpaces := StrReplace(charName, " ", "")
             highestLevel := 0
@@ -111,6 +125,7 @@ Class DataStructure {
             ; onclick := func("LoadTheCode").bind("test")
             ; GuiControl, +g, %charNameNoSpaces%, %onclick%
             Yval := Yval+25
+            ; MsgBox % charName
         }
     }
     LoadTheCode(){
@@ -136,14 +151,12 @@ LoadTheCode:
     accts.LoadTheCode()
 Return
 
-GUIIndex := 0
-
 Class Acct {
     AccountName :=
     Characters := {}
     __New(name, character, level, loadCode){
         this.AccountName := name
-        this.Characters[character] = new Character(character, level, loadCode)
+        this.Characters[character] := new CharacterClass(character, level, loadCode)
         Return this
     }
     AddCharacter(character, level, loadCode){
